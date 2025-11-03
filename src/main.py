@@ -33,17 +33,21 @@ logger.add(
 )
 
 
-def check_api_keys():
+def check_api_keys(require_openai: bool = False):
     """Check if required API keys are configured."""
     api_status = config.validate_api_keys()
     
     if not api_status["openai"]:
-        console.print("[yellow]⚠️  Warning: OpenAI API key not configured. AI exploit generation will be disabled.[/yellow]")
-        console.print("[dim]Set OPENAI_API_KEY in your .env file[/dim]\n")
+        if require_openai:
+            console.print("[bold red]Error: OpenAI API key required for AI features but not configured.[/bold red]")
+            console.print("[dim]Set OPENAI_API_KEY in your .env file or disable AI features[/dim]\n")
+        else:
+            console.print("[yellow]⚠️  Info: OpenAI API key not configured. AI features will be disabled.[/yellow]")
+            console.print("[dim]This is optional - Metasploit and scanning will still work[/dim]\n")
     
     if not api_status["nvd"]:
-        console.print("[yellow]⚠️  Warning: NVD API key not configured. CVE lookups may be rate-limited.[/yellow]")
-        console.print("[dim]Set NVD_API_KEY in your .env file[/dim]\n")
+        console.print("[yellow]⚠️  Info: NVD API key not configured. CVE lookups may be rate-limited.[/yellow]")
+        console.print("[dim]This is optional - you can still scan without it[/dim]\n")
 
 
 @app.command()
@@ -123,11 +127,14 @@ def pentest(
 ):
     """Full penetration test with exploit generation."""
     console.print(Panel.fit("🎯  Bug Bounty CLI - Full Penetration Test", style="bold red"))
-    check_api_keys()
     
+    # Only require OpenAI if user explicitly wants AI exploits
     if ai_exploits and not config.openai_api_key:
         console.print("[bold red]Error: AI exploits enabled but OpenAI API key not configured.[/bold red]")
+        console.print("[dim]Either set OPENAI_API_KEY in .env or use --no-ai-exploits flag[/dim]")
         raise typer.Exit(1)
+    
+    check_api_keys(require_openai=False)
     
     logger.info(f"Starting penetration test on target: {target}")
     console.print(f"[bold]Target:[/bold] {target}")

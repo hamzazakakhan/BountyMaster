@@ -135,10 +135,17 @@ bugbounty config --show
 7. Results storage in database
 8. Report generation in requested format
 
-## API Keys Required
+## API Keys (All Optional)
 
-- **OPENAI_API_KEY** - Required for AI exploit generation (get from https://platform.openai.com/api-keys)
-- **NVD_API_KEY** - Optional for CVE lookups (get from https://nvd.nist.gov/developers/request-an-api-key)
+- **OPENAI_API_KEY** - **Optional** - Only needed for AI-powered features:
+  - AI exploit generation
+  - AI Metasploit module selection (falls back to heuristic ranking)
+  - Get from https://platform.openai.com/api-keys
+  - **Without this key, the tool still works fully with Metasploit and scanning**
+
+- **NVD_API_KEY** - **Optional** - For faster CVE lookups
+  - Get from https://nvd.nist.gov/developers/request-an-api-key
+  - Without this, CVE lookups may be rate-limited but still work
 
 ## Metasploit Integration
 

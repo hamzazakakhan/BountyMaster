@@ -71,8 +71,10 @@ An AI-powered bug bounty CLI tool that leverages Kali Linux penetration testing 
   ```
 
 ### API Keys
-- **OpenAI API Key**: Required for AI exploit generation ([Get API Key](https://platform.openai.com/api-keys))
-- **NVD API Key**: Optional but recommended for faster CVE lookups ([Request API Key](https://nvd.nist.gov/developers/request-an-api-key))
+- **OpenAI API Key**: **Optional** - Only needed for AI exploit generation ([Get API Key](https://platform.openai.com/api-keys))
+  - Without this, the tool still works with Metasploit and basic scanning
+  - Metasploit module selection will use heuristic-based ranking instead of AI
+- **NVD API Key**: **Optional** - Recommended for faster CVE lookups ([Request API Key](https://nvd.nist.gov/developers/request-an-api-key))
 
 ## Installation
 

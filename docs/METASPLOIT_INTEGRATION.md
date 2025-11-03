@@ -27,12 +27,21 @@ msfconsole --version
 msfvenom --version
 ```
 
-### 2. Configure API Keys
+### 2. Configure API Keys (Optional)
 
-Ensure your `.env` file has the OpenAI API key for AI-powered module selection:
+**OpenAI API key is completely optional!** Metasploit integration works with or without it.
+
+**With OpenAI API Key:**
 ```env
 OPENAI_API_KEY=sk-your-api-key-here
 ```
+- AI will intelligently select the best Metasploit module
+- AI can generate custom exploit payloads
+
+**Without OpenAI API Key:**
+- Metasploit module selection uses heuristic-based ranking (by exploit rank)
+- All scanning and exploitation features still work
+- No AI exploit generation, but Metasploit exploits still execute
 
 ## Usage
 
@@ -103,9 +112,9 @@ php
 apache 2.4
 ```
 
-### 3. AI Module Selection
+### 3. Module Selection (AI or Heuristic)
 
-OpenAI analyzes all matching modules and selects the best one based on:
+**With OpenAI API Key:** AI analyzes all matching modules and selects the best one based on:
 
 **Exploit Ranking:**
 - Excellent (most reliable)
@@ -132,6 +141,19 @@ Found 5 modules:
 
 AI Selected: #1 (exploit/multi/http/php_upload_exec)
 Reason: Highest rank, direct match to RCE vulnerability, supports target OS
+```
+
+**Without OpenAI API Key:** Heuristic selection based on exploit rank:
+```
+Found 5 modules:
+1. exploit/multi/http/php_upload_exec (Rank: excellent)
+2. exploit/unix/webapp/php_rce (Rank: good)  
+3. exploit/linux/http/apache_mod_cgi (Rank: normal)
+4. auxiliary/scanner/http/php_version (Rank: normal)
+5. post/multi/gather/php_config (Rank: manual)
+
+Selected: #1 (exploit/multi/http/php_upload_exec)
+Reason: Highest exploit rank (excellent)
 ```
 
 ### 4. Automated Exploitation
@@ -243,13 +265,17 @@ msfdb init
 msfconsole -x "db_rebuild_cache; exit"
 ```
 
-### AI Selection Fails
+### AI Selection Not Used
 
 ```
-[WARNING] OpenAI API key not available. Using basic selection.
+[INFO] Using heuristic-based module selection (OpenAI not configured)
 ```
 
-**Solution:** Add `OPENAI_API_KEY` to your `.env` file.
+**This is normal!** The tool works fine without AI. Modules are selected by:
+- Exploit rank (excellent > great > good > normal > average > low)
+- Alphabetical order for same rank
+
+**To enable AI selection:** Add `OPENAI_API_KEY` to your `.env` file (optional).
 
 ### No Modules Found
 

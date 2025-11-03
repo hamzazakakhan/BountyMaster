@@ -207,15 +207,15 @@ class MetasploitIntegrator:
         return modules
     
     def select_best_module_with_ai(self, vulnerability: Vulnerability, modules: List[MetasploitModule]) -> Optional[MetasploitModule]:
-        """Use AI to select the most appropriate Metasploit module."""
+        """Use AI to select the most appropriate Metasploit module (falls back to heuristic selection)."""
         if not modules:
             return None
         
         if not config.openai_api_key:
-            logger.warning("OpenAI API key not available. Using basic selection.")
+            logger.info("Using heuristic-based module selection (OpenAI not configured)")
             return self._select_best_module_basic(modules)
         
-        logger.info("Using AI to select optimal Metasploit module")
+        logger.info("Using AI-powered module selection")
         
         try:
             import openai

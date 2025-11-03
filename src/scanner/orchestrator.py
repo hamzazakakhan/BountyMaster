@@ -127,12 +127,20 @@ class ScanOrchestrator:
     
     def _enhance_with_ai(self):
         """Enhance vulnerabilities with AI-generated exploits."""
-        logger.info("Enhancing vulnerabilities with AI-generated exploits")
-        
         try:
             from src.ai.exploit_generator import ExploitGenerator
+            from src.config import config
             
+            if not config.openai_api_key:
+                logger.info("AI exploit generation skipped - OpenAI API key not configured")
+                return
+            
+            logger.info("Enhancing vulnerabilities with AI-generated exploits")
             generator = ExploitGenerator()
+            
+            if not generator.enabled:
+                logger.info("AI exploit generation is disabled")
+                return
             
             for vuln in self.result.vulnerabilities:
                 try:
@@ -141,8 +149,10 @@ class ScanOrchestrator:
                         vuln.payload = exploit.payload
                         vuln.steps_to_reproduce.extend(exploit.steps)
                         vuln.metadata["ai_enhanced"] = True
+                        logger.debug(f"Enhanced {vuln.id} with AI exploit")
                 except Exception as e:
                     logger.warning(f"Failed to generate AI exploit for {vuln.id}: {str(e)}")
         
         except Exception as e:
-            logger.error(f"Error initializing AI exploit generator: {str(e)}")
+            logger.error(f"Error with AI exploit generation: {str(e)}")
+            logger.info("Continuing without AI enhancements")
