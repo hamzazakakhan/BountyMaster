@@ -1,4 +1,4 @@
-# Bug Bounty CLI 🛡️
+# BountyMaster
 
 An AI-powered bug bounty CLI tool that leverages Kali Linux penetration testing tools, OpenAI for intelligent exploit generation, and automated vulnerability scanning based on the OWASP Top 10 framework.
 
@@ -248,8 +248,8 @@ This tool is provided for educational and authorized security testing purposes o
 ## Support
 
 For issues, questions, or contributions:
-- GitHub Issues: https://github.com/yourusername/bug-bounty-cli/issues
-- Documentation: https://github.com/yourusername/bug-bounty-cli/wiki
+- GitHub Issues: https://github.com/yourusername/bountymaster/issues
+- Documentation: https://github.com/yourusername/bountymaster/wiki
 
 ## Acknowledgments
 
