@@ -80,8 +80,8 @@ An AI-powered bug bounty CLI tool that leverages Kali Linux penetration testing 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/bug-bounty-cli.git
-cd bug-bounty-cli
+git clone https://github.com/yourusername/bountymaster.git
+cd bountymaster
 ```
 
 ### 2. Create virtual environment
